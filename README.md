@@ -1,4 +1,4 @@
-# Your startup name here
+# JournalEasy
 
 [My Notes](notes.md)
 
@@ -18,21 +18,27 @@ A brief description of the application here. Lorem ipsum dolor sit amet, consect
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] Proper use of Markdown
-- [ ] A concise and compelling elevator pitch
-- [ ] Description of key features
-- [ ] Description of how you will use each technology
-- [ ] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
+- [x] Proper use of Markdown
+- [x] A concise and compelling elevator pitch
+- [x] Description of key features
+- [x] Description of how you will use each technology
+- [x] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
 
 ### Elevator pitch
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Sometimes when big things happen to you, you want to write them down or document them so that you can remember. Or maybe its the small moments that you often forget that seem important to preserve. Either way, journaling by hand can be a little strenuous and when it's late and you're tired it is frequently the first thing to go. But with JournalEasy it is not only quicker to type out your journal entry but since it's digital it is easier to access anywhere and record a quick memory, as well as your memories are backed up and saved no matter what. You can also just talk and have accurate voice to text do the hard work for you. It's a win win! 
 
 ### Design
 
-![Design image](placeholder.png)
+The layout is very simple. Each entry will be minimized to a bar with the name and date showing. There's an option to sort, logout, and create a new entry. Once the "create new" button has been pressed, then an empty template will appear. This template has the option for voice to text or to just type.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+![Design image](IMG_6578.jpg)
+
+![Design image](IMG_6577.jpg)
+
+
+
 
 ```mermaid
 sequenceDiagram
@@ -40,23 +46,52 @@ sequenceDiagram
     actor Website
     You->>Website: Replace this with your design
 ```
+```mermaid
+sequenceDiagram
+    participant Alice as User: Alice
+    participant Bob as User: Bob
+    participant FE as JournalEasy Web App
+    participant BE as JournalEasy Server
+    participant API as Voice-to-Text API
 
+    Alice->>FE: Login with credentials
+    FE->>BE: Authenticate user
+    BE-->>FE: Auth success (JWT/session)
+
+    Alice->>FE: Start new voice journal entry
+    FE->>BE: Open WebSocket connection
+    BE-->>FE: WebSocket connected
+
+    Alice->>FE: Speak into mic
+    FE->>BE: Stream audio via WebSocket
+    BE->>API: Forward audio to speech-to-text
+    API-->>BE: Return partial transcript
+    BE-->>FE: Send live transcript via WebSocket
+    FE-->>Alice: Show live text while speaking
+
+    Alice->>FE: Save journal entry with keyword/date
+    FE->>BE: Send entry data
+    BE-->>FE: Confirm save
+
+    BE-->>Bob: Push "new entry available" via WebSocket
+    FE-->>Bob: Update Bob’s feed in real-time
+```
 ### Key features
 
-- Describe your key feature
-- Describe your key feature
-- Describe your key feature
+- Easy login provides access to all journal entries that are backed up on the cloud for protection.
+- Online journaling gives options to journal no matter where you are and what device you are on.
+- Voice to text permits users to journal while doing other small tasks.
 
 ### Technologies
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Description here
-- **CSS** - Description here
-- **React** - Description here
-- **Service** - Description here
-- **DB/Login** - Description here
-- **WebSocket** - Description here
+- **HTML** - Build the content of the site. One page to login and another to display the journal entries/fill out another entry. The text of the journal entries will all be HTML.
+- **CSS** - Help the site look organized with all the journal entries, interesting but not distracting colors for table headers, buttons, etc.
+- **React** - Does the actual login, does the backend call when a new journal entry is created, pulls an existing journal entry from the database, helps sort the entries by date, etc.
+- **Service** - Has the functionality for the login, creating an account, and logging out. Retrieves journal entries on login, and submits a new created entry. Also will support a voice to text API (I haven't decided what service I want to go with yet).
+- **DB/Login** - Stores login information as well as journal entries connected to the user that created them.
+- **WebSocket** - The Websocket will make the voice to text live, so that words appear as the person speaks them and they can catch any mistakes or edits they want to make as well as making the experience smoother. I could also send a notification when a different device creates or edits an entry and help multiple devices stay synced.
 
 ## 🚀 AWS deliverable
 

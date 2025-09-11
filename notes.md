@@ -1,5 +1,10 @@
 # CS 260 Notes
 
+Project Ideas:
+Climbing app
+Some sort of voting app
+
+
 I learned that git is useful.
 [My startup - Simon](https://simon.cs260.click)
 
@@ -13,6 +18,9 @@ I learned that git is useful.
 
 My IP address is: 54.81.96.130
 Launching my AMI I initially put it on a private subnet. Even though it had a public IP address and the security group was right, I wasn't able to connect to it.
+
+Once you decide your startup name, go to route 53 on AWS and purchase the domain name. .link and .click are cheaper. Then go into Hosted Zones. Configure the A record to be your IP address, put it in the value when you edit the record.
+It will send an email when you buy the domain name, make sure to confirm the email.
 
 ## Caddy
 
