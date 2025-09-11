@@ -42,14 +42,7 @@ The layout is very simple. Each entry will be minimized to a bar with the name a
 
 ```mermaid
 sequenceDiagram
-    actor You
-    actor Website
-    You->>Website: Replace this with your design
-```
-```mermaid
-sequenceDiagram
     participant Alice as User: Alice
-    participant Bob as User: Bob
     participant FE as JournalEasy Web App
     participant BE as JournalEasy Server
     participant API as Voice-to-Text API
@@ -72,9 +65,6 @@ sequenceDiagram
     Alice->>FE: Save journal entry with keyword/date
     FE->>BE: Send entry data
     BE-->>FE: Confirm save
-
-    BE-->>Bob: Push "new entry available" via WebSocket
-    FE-->>Bob: Update Bob’s feed in real-time
 ```
 ### Key features
 
