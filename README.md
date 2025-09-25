@@ -93,15 +93,15 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **HTML pages** - I did not complete this part of the deliverable.
-- [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
-- [ ] **Links** - I did not complete this part of the deliverable.
-- [ ] **Text** - I did not complete this part of the deliverable.
-- [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [ ] **Images** - I did not complete this part of the deliverable.
-- [ ] **Login placeholder** - I did not complete this part of the deliverable.
-- [ ] **DB data placeholder** - I did not complete this part of the deliverable.
-- [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [x] **HTML pages** - I have three pages in my startup, one to login and create an account, one to display all the journal entries and create new ones, and the last one is about the startup.
+- [x] **Proper HTML element usage** - I used all the required elements and explored adding a table and other elements as well.
+- [x] **Links** - I have three links included at the top of each page that link to the other pages.
+- [x] **Text** - I have text on the about page that explains how to use the site and why I created it, and I also have placeholder text on the home page to show where and how journal entries will be displayed.
+- [x] **3rd party API placeholder** - I have a button on the home page that will link to the voice to text third party api to create a journal entry by voice.
+- [x] **Images** - I included an image of an empty journal on the login page.
+- [x] **Login placeholder** - I have a page to login and have an input box for both a username and password, as well as buttons to press login or create account.
+- [x] **DB data placeholder** - I have text placeholders of where the journal entries that are in the database under each user will be displayed for the user to go through.
+- [x] **WebSocket placeholder** - I wasn't totally sure where to put this placeholder so I have a note on the login page that says that my websocket will be used to sync different devices signed into the same account in realtime. Not sure if that is something I need to display in the website or if that will be fully on the backend of the site.
 
 ## 🚀 CSS deliverable
 
