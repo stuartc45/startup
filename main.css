@@ -3,3 +3,16 @@
     font-style: italic;
     font-size: x-large;
 }
+
+.nav-style {
+    background-color: #7baee1;
+}
+
+.nav-separator {
+    justify-content: center;
+}
+
+.button-color {
+    background-color: #7baee1;
+    border-color: #68a3df;
+}
