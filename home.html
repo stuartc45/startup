@@ -7,6 +7,7 @@
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="home.css">
 </head>
 <body class="d-flex flex-column min-vh-100">
     <header>
@@ -31,13 +32,17 @@
     </header>
 
     <main class="flex-fill">
-        <h2>Your Entries</h2>
-        <label for="button1">Create Entry with Typing</label>
-        <button id="button1">Create</button>
-        <i class="bi bi-pencil-square"></i>
-        <br>
-        <label for="button2">Create Entry with Third Party Voice to Text</label>
-        <button id="button2">Create</button>
+        <h2 class="title">Your Entries</h2>
+        <div class="button-group">
+            <div class="button-container gap-2">
+                <label for="button1" class="button1">Create Entry with Typing</label>
+                <button id="button1" type="button" class="btn btn-outline-primary button1">Create</button>
+            </div>
+            <div class="button-container gap-2">
+                <label for="button2" class="button2">Create Entry with Third Party Voice to Text</label>
+                <button type="button" id="button2" class="btn btn-outline-primary button2">Create</button>
+            </div>
+        </div>
         <!-- <p>This will be an accordion item that will display the entries in the database that are under the user logged in.</p>
         <table>
             <tr>
@@ -71,7 +76,7 @@
     </h2>
     <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
       <div class="accordion-body">
-        <strong>Title of the Journal Entry</strong> This is the journal entry and all the things they want to write.
+        <strong>Title of the Journal Entry</strong> This is the journal entry and all the things they want to write, these will populate from the database.
       </div>
     </div>
   </div>
