@@ -5,7 +5,8 @@
 }
 
 .nav-style {
-    background-color: #7baee1;
+    /* background-color: #7baee1; */
+    background-color: #DDEEFF;
 }
 
 .nav-separator {
@@ -15,4 +16,23 @@
 .button-color {
     background-color: #7baee1;
     border-color: #68a3df;
+}
+
+main {
+    margin-top: 7%;
+}
+
+footer {
+    background-color: #DDEEFF;
+    padding: 1%;
+}
+
+.footer-name {
+    /* float: left; */
+    margin-left: 2%;
+}
+
+.footer-github {
+    float: right;
+    margin-right: 2%;
 }
