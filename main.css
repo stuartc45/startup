@@ -36,3 +36,11 @@ footer {
     float: right;
     margin-right: 2%;
 }
+
+.accordion-header {
+    background-color: #7baee1;
+}
+
+body {
+    background-color: #F8F9FA;
+}
