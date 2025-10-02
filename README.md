@@ -107,12 +107,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Header, footer, and main content body** - I did not complete this part of the deliverable.
-- [ ] **Navigation elements** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing** - I did not complete this part of the deliverable.
-- [ ] **Application elements** - I did not complete this part of the deliverable.
-- [ ] **Application text content** - I did not complete this part of the deliverable.
-- [ ] **Application images** - I did not complete this part of the deliverable.
+- [x] **Header, footer, and main content body** - The header and footer stay at the top and bottom respectively and are a matching color that fits well with the background of the content body. 
+- [x] **Navigation elements** - The links are well placed in the header and whatever page you are on, that link is slightly bolded
+- [x] **Responsive to window resizing** - I made the body a flex with certain sizing so that as the page scales smaller it should resize to work with the smaller screen.
+- [x] **Application elements** - Added the accordion and other items that I wasn't able to put with just the html, made the login more easy to follow.
+- [x] **Application text content** - Spaced and styled the text so that it looks better positioned, added color where needed to make the page feel more organized and designed.
+- [x] **Application images** - I centered and sized the image so that it scales with the size of the screen.
 
 ## 🚀 React part 1: Routing deliverable
 
