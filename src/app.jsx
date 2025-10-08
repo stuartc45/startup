@@ -20,8 +20,8 @@ export default function App() {
                             </button>
                             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                                 <div className="navbar-nav">
-                                    <NavLink className="nav-link" aria-current="page" to='home'>Home</NavLink>
-                                    <NavLink className="nav-link" to='login'>Login</NavLink>
+                                    <NavLink className="nav-link" to='home'>Home</NavLink>
+                                    <NavLink className="nav-link" to=''>Login</NavLink>
                                     <NavLink className="nav-link" to='about'>About/How to Use</NavLink>
                                 </div>
                             </div>
@@ -32,8 +32,7 @@ export default function App() {
 
             <Routes>
                 <Route path='/' element={<Login />} exact />
-                <Route path='/play' element={<Play />} />
-                <Route path='/scores' element={<Scores />} />
+                <Route path='/home' element={<Home />} />
                 <Route path='/about' element={<About />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
