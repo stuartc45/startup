@@ -33,9 +33,9 @@ Sometimes when big things happen to you, you want to write them down or document
 The layout is very simple. Each entry will be minimized to a bar with the name and date showing. There's an option to sort, logout, and create a new entry. Once the "create new" button has been pressed, then an empty template will appear. This template has the option for voice to text or to just type.
 
 
-![Design image](IMG_6578.jpg)
+![Design image](public/IMG_6578.jpg)
 
-![Design image](IMG_6577.jpg)
+![Design image](public/IMG_6577.jpg)
 
 
 
@@ -118,9 +118,9 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Bundled using Vite** - I did not complete this part of the deliverable.
-- [ ] **Components** - I did not complete this part of the deliverable.
-- [ ] **Router** - I did not complete this part of the deliverable.
+- [x] **Bundled using Vite** - I created the vite app using npm install vite@latest -D, and then created the tree structure that it is expecting with public and src. Once I had that I could run vite using npm run dev.
+- [x] **Components** - I created the app.jsx file which is the base of my page. I changed the home.html, login.html, and about.html into components through .jsx files in my src folder. That was I can just use them as components and the header and footer stay in the app.jsx file and don't get changed when the other components do.
+- [x] **Router** - I wrapped the app.jsx return code in a browser router tag, which allowed me to do a separate route or URL for each component and as that certain URL was called, it would import the specific compontent into the app.jsx code and display it.
 
 ## 🚀 React part 2: Reactivity deliverable
 
