@@ -5,8 +5,13 @@ import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
 import { Login } from './login/login';
 import { Home } from './home/home';
 import { About } from './about/about';
+import { AuthState } from './login/authState';
 
 export default function App() {
+    const [userName, setUserName] = React.useState(localStorage.getItem('userName') || '');
+    const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
+    const [authState, setAuthState] = React.useState(currentAuthState);
+
     return (
     <BrowserRouter>
         <div className="d-flex flex-column min-vh-100">
@@ -20,9 +25,17 @@ export default function App() {
                             </button>
                             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                                 <div className="navbar-nav">
-                                    <NavLink className="nav-link" to='home'>Home</NavLink>
-                                    <NavLink className="nav-link" to=''>Login</NavLink>
-                                    <NavLink className="nav-link" to='about'>About/How to Use</NavLink>
+                                    <NavLink className="nav-link" to=''>
+                                        Login
+                                    </NavLink>
+                                    {authState === AuthState.Authenticated && (
+                                    <NavLink className="nav-link" to='home'>
+                                        Home
+                                    </NavLink>
+                                    )}
+                                    <NavLink className="nav-link" to='about'>
+                                        About/How to Use
+                                    </NavLink>
                                 </div>
                             </div>
                         </div>
@@ -31,7 +44,19 @@ export default function App() {
             </header>
 
             <Routes>
-                <Route path='/' element={<Login />} exact />
+                <Route path='/'
+                    element={
+                        <Login
+                            userName={userName}
+                            authState={authState}
+                            onAuthChange={(userName, authState) => {
+                            setAuthState(authState);
+                            setUserName(userName);
+                            }}
+                        />
+                    }
+                    exact
+                />
                 <Route path='/home' element={<Home />} />
                 <Route path='/about' element={<About />} />
                 <Route path='*' element={<NotFound />} />
