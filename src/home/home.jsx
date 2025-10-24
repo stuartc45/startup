@@ -1,7 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './home.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 export function Home() {
+    const [entries, setEntries] = useState([]);
+    const [newEntry, setNewEntry] = useState({ title: '', date: '', body: '' });
+    const [showModal, setShowModal] = useState(false);
+
+    useEffect(() => {
+        const storedEntries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+        setEntries(storedEntries);
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('journalEntries', JSON.stringify(entries));
+    }, [entries]);
+
+    function handleAddEntry() {
+        if (!newEntry.title || !newEntry.date || !newEntry.body) {
+        alert('Please fill in all fields');
+        return;
+        }
+
+        const updatedEntries = [...entries, newEntry];
+        setEntries(updatedEntries);
+        setNewEntry({ title: '', date: '', body: '' });
+
+        // Close the modal programmatically
+        const modal = window.bootstrap.Modal.getInstance(modalRef.current);
+        modal.hide();
+    }
+
+
   return (
     <main className="flex-fill">
         <div className="title-container">
