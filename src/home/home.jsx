@@ -28,6 +28,9 @@ export function Home() {
 
         // Close the modal programmatically
         const modal = window.bootstrap.Modal.getInstance(modalRef.current);
+        if (!modal) {
+            modal = new window.bootstrap.Modal(modalRef.current);
+        }
         modal.hide();
     }
 
@@ -148,9 +151,14 @@ export function Home() {
               >
                 Cancel
               </button>
-              <button type="button" className="btn btn-primary" onClick={handleAddEntry}>
+              <button
+                type="button"
+                className="btn btn-primary"
+                data-bs-dismiss="modal"
+                onClick={handleAddEntry}
+                >
                 Save Entry
-              </button>
+            </button>
             </div>
           </div>
         </div>
