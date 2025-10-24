@@ -56,43 +56,34 @@ export function Home() {
         </div>
 
         <div className="accordion" id="journalAccordion">
-            <div className="accordion-item">
-                <h2 className="accordion-header">
-                    <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Date of Entry 1
-                    </button>
-                </h2>
-                <div id="collapseOne" className="accordion-collapse collapse show" data-bs-parent="#journalAccordion">
-                    <div className="accordion-body">
-                        <strong>Title of the Journal Entry</strong> This is the journal entry and all the things they want to write, these will populate from the database.
-                    </div>
-                </div>
+        {entries.length === 0 ? (
+          <p className="text-muted">No journal entries yet. Create one above!</p>
+        ) : (
+          entries.map((entry, index) => (
+            <div className="accordion-item" key={index}>
+              <h2 className="accordion-header" id={`heading${index}`}>
+                <button
+                  className="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target={`#collapse${index}`}
+                  aria-expanded="false"
+                  aria-controls={`collapse${index}`}
+                >
+                  {entry.title} — {entry.date}
+                </button>
+              </h2>
+              <div
+                id={`collapse${index}`}
+                className="accordion-collapse collapse"
+                data-bs-parent="#journalAccordion"
+              >
+                <div className="accordion-body">{entry.body}</div>
+              </div>
             </div>
-            <div className="accordion-item">
-                <h2 className="accordion-header">
-                    <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Date of Entry 2
-                    </button>
-                </h2>
-                <div id="collapseTwo" className="accordion-collapse collapse" data-bs-parent="#journalAccordion">
-                    <div className="accordion-body">
-                        <strong>This is the second item’s accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It’s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                    </div>
-                </div>
-            </div>
-            <div className="accordion-item">
-                <h2 className="accordion-header">
-                    <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        Date of Entry 3
-                    </button>
-                </h2>
-                <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#journalAccordion">
-                    <div className="accordion-body">
-                        <strong>This is the third item’s accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It’s also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                    </div>
-                </div>
-            </div>
-        </div>
+          ))
+        )}
+      </div>
         <div
         className="modal fade"
         id="createEntryModal"
