@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import './login.css';
 import { AuthState } from './authState';
 import { useNavigate } from 'react-router-dom';
+import { Authenticated } from './authenticated';
 
 
-export function Login({ onAuthChange }) {
+export function Login({ userName, authState, onAuthChange }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -36,6 +37,16 @@ export function Login({ onAuthChange }) {
 
   return (
     <main className="flex-fill container text-center mt-5">
+        {authState === AuthState.Authenticated ? (
+        <Authenticated
+        userName={userName}
+        onLogout={() => {
+            localStorage.removeItem('userName');
+            onAuthChange('', AuthState.Unauthenticated);
+        }}
+        />
+        ) : (
+            <>
       <div className="image mb-3">
         <img id="journal-photo" width="400" src="journal-scaled.jpeg" alt="Journal" />
       </div>
@@ -130,6 +141,8 @@ export function Login({ onAuthChange }) {
           </div>
         )}
       </div>
+      </>
+      )}
     </main>
   );
 }

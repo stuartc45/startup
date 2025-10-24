@@ -25,9 +25,23 @@ export default function App() {
                             </button>
                             <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                                 <div className="navbar-nav">
-                                    <NavLink className="nav-link" to=''>
+                                    {authState === AuthState.Authenticated ? (
+                                    <NavLink
+                                        className="nav-link"
+                                        to="/"
+                                        onClick={() => {
+                                        localStorage.removeItem('userName');
+                                        setAuthState(AuthState.Unauthenticated);
+                                        setUserName('');
+                                        }}
+                                    >
+                                        Logout
+                                    </NavLink>
+                                    ) : (
+                                    <NavLink className="nav-link" to="">
                                         Login
                                     </NavLink>
+                                    )}
                                     {authState === AuthState.Authenticated && (
                                     <NavLink className="nav-link" to='home'>
                                         Home
