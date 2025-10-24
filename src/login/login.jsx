@@ -1,34 +1,38 @@
 import React, { useState } from 'react';
 import './login.css';
 import { AuthState } from './authState';
+import { useNavigate } from 'react-router-dom';
 
 
-export function Login() {
+export function Login({ onAuthChange }) {
     const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [activeTab, setActiveTab] = useState('signin');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [activeTab, setActiveTab] = useState('signin');
+    const navigate = useNavigate();
 
-  function handleLogin(e) {
-    e.preventDefault();
-    console.log('Logging in:', email);
+    function handleLogin(e) {
+        e.preventDefault();
+        console.log('Logging in:', email);
 
-    // simulate authentication
-    localStorage.setItem('userName', email);
-    onAuthChange(email, AuthState.Authenticated);
-  }
-
-  function handleSignup(e) {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      alert("Passwords don't match!");
-      return;
+        // simulate authentication
+        localStorage.setItem('userName', email);
+        onAuthChange(email, AuthState.Authenticated);
+        navigate('/home');
     }
 
-    console.log('Signing up:', email);
-    localStorage.setItem('userName', email);
-    onAuthChange(email, AuthState.Authenticated);
-  }
+    function handleSignup(e) {
+        e.preventDefault();
+        if (password !== confirmPassword) {
+            alert("Passwords don't match!");
+            return;
+        }
+
+        console.log('Signing up:', email);
+        localStorage.setItem('userName', email);
+        onAuthChange(email, AuthState.Authenticated);
+        navigate('/home');
+    }
 
   return (
     <main className="flex-fill container text-center mt-5">
@@ -129,61 +133,3 @@ export function Login() {
     </main>
   );
 }
-
-
-//     <main className="flex-fill">
-//         <div className="image">
-//             <img id="journal-photo" width="400" src="journal-scaled.jpeg" />
-//         </div>
-//         <h3 className="instructions">Fill out the form with your email and password to login or select Sign Up to get started!</h3>
-
-//       <div className="container mt-5">
-//         <ul className="nav nav-tabs justify-content-center" id="authTab" role="tablist">
-//             <li className="nav-item" role="presentation">
-//             <button className="nav-link active" id="signin-tab" data-bs-toggle="tab" data-bs-target="#signin" type="button" role="tab">
-//                 Sign In
-//             </button>
-//             </li>
-//             <li className="nav-item" role="presentation">
-//             <button className="nav-link" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signup" type="button" role="tab">
-//                 Sign Up
-//             </button>
-//             </li>
-//         </ul>
-
-//         <div className="tab-content mt-3">
-//             <div className="tab-pane fade show active" id="signin" role="tabpanel">
-//                 <form method="get" action="home.html">
-//                     <div className="mb-3">
-//                         <label>Email</label>
-//                         <input type="email" className="form-control" />
-//                     </div>
-//                     <div className="mb-3">
-//                         <label>Password</label>
-//                         <input type="password" className="form-control" />
-//                     </div>
-//                     <button type="submit" className="btn btn-primary w-100 button-color">Login</button>
-//                 </form>
-//             </div>
-//             <div className="tab-pane fade" id="signup" role="tabpanel">
-//                 <form method="get" action="home.html">
-//                     <div className="mb-3">
-//                         <label>Email</label>
-//                         <input type="email" className="form-control" />
-//                     </div>
-//                     <div className="mb-3">
-//                         <label>Password</label>
-//                         <input type="password" className="form-control" />
-//                     </div>
-//                     <div className="mb-3">
-//                         <label>Confirm Password</label>
-//                         <input type="password" className="form-control" />
-//                     </div>
-//                     <button type="submit" className="btn btn-success w-100">Sign Up</button>
-//                 </form>
-//             </div>
-//         </div>
-// </div>
-
-
-//     </main>
