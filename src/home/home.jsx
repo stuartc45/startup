@@ -6,6 +6,8 @@ export function Home() {
     const [entries, setEntries] = useState([]);
     const [newEntry, setNewEntry] = useState({ title: '', date: '', body: '' });
     const modalRef = useRef(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editIndex, setEditIndex] = useState(null);
 
     useEffect(() => {
         const storedEntries = JSON.parse(localStorage.getItem('journalEntries')) || [];
@@ -22,16 +24,38 @@ export function Home() {
         return;
         }
 
-        const updatedEntries = [...entries, newEntry];
+        let updatedEntries;
+        if (isEditing && editIndex !== null) {
+            // update the existing entry
+            updatedEntries = [...entries];
+            updatedEntries[editIndex] = newEntry;
+        } else {
+            // add a new entry
+            updatedEntries = [...entries, newEntry];
+        }
+
         setEntries(updatedEntries);
         setNewEntry({ title: '', date: '', body: '' });
+        setIsEditing(false);
+        setEditIndex(null);
 
         // Close the modal programmatically
-        const modal = window.bootstrap.Modal.getInstance(modalRef.current);
-        if (!modal) {
-            modal = new window.bootstrap.Modal(modalRef.current);
+        // const modal = window.bootstrap.Modal.getInstance(modalRef.current);
+        
+        // modal.hide();
+    }
+
+    function handleEdit(index) {
+        setNewEntry(entries[index]);
+        setIsEditing(true);
+        setEditIndex(index);
+    }
+
+    function handleDelete(index) {
+        if (window.confirm('Are you sure you want to delete this entry?')) {
+            const updatedEntries = entries.filter((_, i) => i !== index);
+            setEntries(updatedEntries);
         }
-        modal.hide();
     }
 
 
@@ -40,17 +64,18 @@ export function Home() {
         <div className="title-container">
             <h2 className="title">Your Entries</h2>
         </div>
-         <button
+         
+        <div className="button-group">
+            <div className="button-container gap-2">
+                <label for="button1" className="button1">Create Entry with Typing</label>
+                <button
+                id="button1"
           className="btn btn-primary"
           data-bs-toggle="modal"
           data-bs-target="#createEntryModal"
         >
           Create Entry
         </button>
-        <div className="button-group">
-            <div className="button-container gap-2">
-                <label for="button1" className="button1">Create Entry with Typing</label>
-                <button id="button1" type="button" className="btn btn-outline-primary button1">Create</button>
             </div>
             <div className="button-container gap-2">
                 <label for="button2" className="button2">Create Entry with Third Party Voice to Text</label>
@@ -81,7 +106,23 @@ export function Home() {
                 className="accordion-collapse collapse"
                 data-bs-parent="#journalAccordion"
               >
-                <div className="accordion-body">{entry.body}</div>
+                <div className="accordion-body">
+                    <p>{entry.body}</p>
+                    <div className="d-flex justify-content-end gap-2">
+                        <button
+                        className="btn btn-outline-secondary btn-sm"
+                        onClick={() => handleEdit(index)}
+                        >
+                        Edit
+                        </button>
+                        <button
+                        className="btn btn-outline-danger btn-sm"
+                        onClick={() => handleDelete(index)}
+                        >
+                        Delete
+                        </button>
+                    </div>
+                </div>
               </div>
             </div>
           ))
@@ -99,7 +140,7 @@ export function Home() {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="createEntryModalLabel">
-                Create New Entry
+                {isEditing ? 'Edit Entry' : 'Create New Entry'}
               </h5>
               <button
                 type="button"
@@ -157,7 +198,7 @@ export function Home() {
                 data-bs-dismiss="modal"
                 onClick={handleAddEntry}
                 >
-                Save Entry
+                {isEditing ? 'Save Changes' : 'Save Entry'}
             </button>
             </div>
           </div>
