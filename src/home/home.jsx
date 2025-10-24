@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './home.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 export function Home() {
     const [entries, setEntries] = useState([]);
     const [newEntry, setNewEntry] = useState({ title: '', date: '', body: '' });
-    const [showModal, setShowModal] = useState(false);
+    const modalRef = useRef(null);
 
     useEffect(() => {
         const storedEntries = JSON.parse(localStorage.getItem('journalEntries')) || [];
@@ -37,6 +37,13 @@ export function Home() {
         <div className="title-container">
             <h2 className="title">Your Entries</h2>
         </div>
+         <button
+          className="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#createEntryModal"
+        >
+          Create Entry
+        </button>
         <div className="button-group">
             <div className="button-container gap-2">
                 <label for="button1" className="button1">Create Entry with Typing</label>
@@ -85,6 +92,77 @@ export function Home() {
                     </div>
                 </div>
             </div>
+        </div>
+        <div
+        className="modal fade"
+        id="createEntryModal"
+        tabIndex="-1"
+        aria-labelledby="createEntryModalLabel"
+        aria-hidden="true"
+        ref={modalRef}
+        >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="createEntryModalLabel">
+                Create New Entry
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <div className="mb-3 text-start">
+                <label>Title</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={newEntry.title}
+                  onChange={(e) =>
+                    setNewEntry({ ...newEntry, title: e.target.value })
+                  }
+                />
+              </div>
+              <div className="mb-3 text-start">
+                <label>Date</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  value={newEntry.date}
+                  onChange={(e) =>
+                    setNewEntry({ ...newEntry, date: e.target.value })
+                  }
+                />
+              </div>
+              <div className="mb-3 text-start">
+                <label>Body</label>
+                <textarea
+                  className="form-control"
+                  rows="4"
+                  value={newEntry.body}
+                  onChange={(e) =>
+                    setNewEntry({ ...newEntry, body: e.target.value })
+                  }
+                ></textarea>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button type="button" className="btn btn-primary" onClick={handleAddEntry}>
+                Save Entry
+              </button>
+            </div>
+          </div>
+        </div>
         </div>
     </main>
   );
