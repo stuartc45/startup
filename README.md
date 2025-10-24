@@ -126,8 +126,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **All functionality implemented or mocked out** - I did not complete this part of the deliverable.
-- [ ] **Hooks** - I did not complete this part of the deliverable.
+- [x] **All functionality implemented or mocked out** - Everything should be working now except for the third party voice to text api button. The login page gives the user the option to go back and forth between a sign in or sign up option. When the user isn't signed in, the home navlink isn't present. On sign in, the user is redirected to the home page where they can see their journal entries and create new ones. Clicking create entry pulls up a modal where the user can type a title, select a date, and type a body for their entry. When created, the journal appears in the accordion object. There are also an edit and delete buttons to edit or delete the entry.
+- [x] **Hooks** - I have a fair amount of useState and useEffect hooks, mostly in the home component and its subcomponents. I use a state variable to track the journal entries, the form for creating a new entry, whether the entry is being edited or not and the index of the entry being edited, etc. These are necessary because even if a user goes to a different page of the website I want the entries to be remembered. I have a couple useEffect hooks in my home component to load the journal entries from localstorage and to save the entries to localstorage.
 
 ## 🚀 Service deliverable
 
