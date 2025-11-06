@@ -22,25 +22,86 @@ export function Home() {
     localStorage.setItem('journalEntries', JSON.stringify(entries));
   }, [entries]);
 
-  function handleAddEntry() {
-    if (!newEntry.title || !newEntry.date || !newEntry.body) {
-      alert('Please fill in all fields');
-      return;
-    }
+  // function handleAddEntry() {
+  //   if (!newEntry.title || !newEntry.date || !newEntry.body) {
+  //     alert('Please fill in all fields');
+  //     return;
+  //   }
 
+  //   let updatedEntries;
+  //   if (isEditing && editIndex !== null) {
+  //     updatedEntries = [...entries];
+  //     updatedEntries[editIndex] = newEntry;
+  //   } else {
+  //     updatedEntries = [...entries, newEntry];
+  //   }
+
+  //   setEntries(updatedEntries);
+  //   setNewEntry({ title: '', date: '', body: '' });
+  //   setIsEditing(false);
+  //   setEditIndex(null);
+
+  //   // if (modalRef.current) {
+  //   // Modal.getOrCreateInstance(modalRef.current).hide();
+  //   // }
+  // }
+
+  async function handleAddEntry() {
+  if (!newEntry.title || !newEntry.date || !newEntry.body) {
+    alert('Please fill in all fields');
+    return;
+  }
+
+  try {
     let updatedEntries;
-    if (isEditing && editIndex !== null) {
+
+    // --- POST to backend for NEW entry ---
+    if (!isEditing) {
+      const response = await fetch('/api/entry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newEntry),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save entry');
+      }
+
+      const savedEntry = await response.json();
+      // savedEntry should include ID created by DB
+
+      updatedEntries = [...entries, savedEntry];
+    }
+    // --- PUT to backend for EDITING an entry ---
+    else if (isEditing && editIndex !== null) {
+      const entryToUpdate = entries[editIndex];
+
+      const response = await fetch(`/api/entries/${entryToUpdate.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newEntry),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update entry');
+      }
+
+      const updatedEntry = await response.json();
+
       updatedEntries = [...entries];
-      updatedEntries[editIndex] = newEntry;
-    } else {
-      updatedEntries = [...entries, newEntry];
+      updatedEntries[editIndex] = updatedEntry;
     }
 
+    // ✅ Update local state so UI stays responsive
     setEntries(updatedEntries);
     setNewEntry({ title: '', date: '', body: '' });
     setIsEditing(false);
     setEditIndex(null);
+  } catch (err) {
+    console.error(err);
+    alert('Error saving entry');
   }
+}
 
   function handleEdit(index) {
     setNewEntry(entries[index]);

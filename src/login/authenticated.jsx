@@ -22,7 +22,7 @@ export function Authenticated({ userName, onLogout }) {
       <h2>Welcome back, {userName}!</h2>
       <p>You’re signed in to JournalEasy.</p>
       <div className="d-flex justify-content-center gap-2 mt-3">
-        <Button variant="primary" onClick={() => navigate('/dashboard')}>
+        <Button variant="primary" onClick={() => navigate('/home')}>
           Go to Dashboard
         </Button>
         <Button variant="danger" onClick={handleLogout}>

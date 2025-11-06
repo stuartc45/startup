@@ -44,16 +44,45 @@ apiRouter.post('/auth/login', async (req, res) => {
       res.status(401).send({ msg: 'Unauthorized' });
 });
 
+
 // logs out a user
 apiRouter.delete('/auth/logout', async (req, res) => {
-
+    const user = await findUser('token', req.cookies[authCookieName]);
+    if (user) {
+        delete user.token;
+    }
+    res.clearCookie(authCookieName);
+    res.status(204).end();
 });
+
 
 // Adds a journal entry
-apiRouter.post('/entry', async (req, res) => {
+apiRouter.post('/entry', verifyAuth, async (req, res) => {
+    entries = updateEntries(req.body);
+    res.send(entries);
+});
+
+
+// Deletes a journal entry
+apiRouter.delete('/entry', async (req, res) => {
 
 });
 
+
+// Edits a journal entry
+apiRouter.put(`/api/entry/${entryToUpdatde.id}`, async (req, res) => {
+
+});
+
+
+const verifyAuth = async (req, res, next) => {
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    next();
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+};
 
 async function createUser(email, password) {
   const passwordHash = await bcrypt.hash(password, 10);
@@ -82,3 +111,7 @@ function setAuthCookie(res, authToken) {
     sameSite: 'strict',
   });
 }
+
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
+});

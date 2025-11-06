@@ -17,23 +17,6 @@ export function Login({ userName, authState, onAuthChange }) {
       e.preventDefault();
       console.log('Logging in:', email);
       loginOrCreate('/api/auth/login');
-
-      // const response = await fetch('/api/auth/login', {
-      //   method: 'post',
-      //   body: JSON.stringify({ email: email, password: password }),
-      //   headers: {
-      //     'Content-type': 'application/json; charset=UTF-8',
-      //   },
-      // });
-      // if (response?.status === 200) {
-      //   localStorage.setItem('userName', email);
-      //   onAuthChange(email, AuthState.Authenticated);
-      //   navigate('/home');
-      // } else {
-        
-      // }
-      
-      
     }
 
 
@@ -45,11 +28,6 @@ export function Login({ userName, authState, onAuthChange }) {
         }
         console.log('Signing up:', email);
         loginOrCreate('/api/auth/register');
-
-
-        // localStorage.setItem('userName', email);
-        // onAuthChange(email, AuthState.Authenticated);
-        // navigate('/home');
     }
 
 

@@ -140,6 +140,9 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
 - [ ] **Supports registration, login, logout, and restricted endpoint** - I did not complete this part of the deliverable.
 
+Create entry endpoint - pass the user id
+edit entry endpoint, delete entry endpoint, auto close of modal, 
+
 
 ## 🚀 DB deliverable
 
