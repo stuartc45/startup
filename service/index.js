@@ -64,14 +64,16 @@ apiRouter.post('/entry', verifyAuth, async (req, res) => {
 
 
 // Deletes a journal entry
-apiRouter.delete('/entry', async (req, res) => {
-
+apiRouter.delete('/entry', verifyAuth, async (req, res) => {
+    entries = deleteEntry(req.body);
+    res.status(204).send(entries);
 });
 
 
 // Edits a journal entry
-apiRouter.put(`/api/entry/${entryToUpdatde.id}`, async (req, res) => {
-
+apiRouter.put(`/entry`, verifyAuth, async (req, res) => {
+    entries = updateEntries(req.body);
+    res.send(entries);
 });
 
 
