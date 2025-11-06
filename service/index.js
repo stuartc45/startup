@@ -58,21 +58,21 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 
 // Adds a journal entry
 apiRouter.post('/entry', verifyAuth, async (req, res) => {
-    entries = updateEntries(req.body);
-    res.send(entries);
+    updateEntries(req.body);
+    res.status(200).send(req.body);
 });
 
 
 // Deletes a journal entry
 apiRouter.delete('/entry', verifyAuth, async (req, res) => {
-    entries = deleteEntry(req.body);
+    deleteEntry(req.body);
     res.status(204).send(entries);
 });
 
 
 // Edits a journal entry
 apiRouter.put(`/entry`, verifyAuth, async (req, res) => {
-    entries = updateEntries(req.body);
+    updateEntries(req.body);
     res.send(entries);
 });
 
@@ -85,6 +85,28 @@ const verifyAuth = async (req, res, next) => {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 };
+
+function updateEntries(entry) {
+    for (e in entries) {
+        if (entry.title === e.title) {
+            e.title = entry.title;
+            e.date = entry.date;
+            e.body = entry.body;
+            return;
+        }
+    }
+
+    entries.push(entry);
+
+}
+
+function deleteEntry(entry) {
+    for (let i = 0; i < entries.length; i++) {
+        if (entry.title === entries[i].title) {
+            entries.splice(i, 1);
+        }
+    }
+}
 
 async function createUser(email, password) {
   const passwordHash = await bcrypt.hash(password, 10);

@@ -76,7 +76,7 @@ export function Home() {
     else if (isEditing && editIndex !== null) {
       const entryToUpdate = entries[editIndex];
 
-      const response = await fetch(`/api/entries/${entryToUpdate.id}`, {
+      const response = await fetch(`/api/entry`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newEntry),
