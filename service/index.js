@@ -58,22 +58,43 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 
 // Adds a journal entry
 apiRouter.post('/entry', verifyAuth, async (req, res) => {
-    updateEntries(req.body);
-    res.status(200).send(req.body);
+  const entry = {
+    id: uuid.v4(),
+    title: req.body.title,
+    date: req.body.date,
+    body: req.body.body,
+  };
+
+  entries.push(entry);
+  res.status(201).send(entry);
 });
 
 
 // Deletes a journal entry
-apiRouter.delete('/entry', verifyAuth, async (req, res) => {
-    deleteEntry(req.body);
-    res.status(204).send(entries);
+apiRouter.delete('/entry/:id', verifyAuth, (req, res) => {
+  const { id } = req.params;
+
+  const index = entries.findIndex(e => e.id === id);
+  if (index === -1) {
+    return res.status(404).send({ msg: 'Entry not found' });
+  }
+
+  entries.splice(index, 1);
+  res.status(204).end();
 });
 
 
 // Edits a journal entry
-apiRouter.put(`/entry`, verifyAuth, async (req, res) => {
-    updateEntries(req.body);
-    res.send(entries);
+apiRouter.put('/entry/:id', verifyAuth, (req, res) => {
+  const { id } = req.params;
+
+  const index = entries.findIndex(e => e.id === id);
+  if (index === -1) {
+    return res.status(404).send({ msg: 'Entry not found' });
+  }
+
+  entries[index] = { ...entries[index], ...req.body };
+  res.send(entries[index]);
 });
 
 
