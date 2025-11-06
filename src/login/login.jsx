@@ -12,15 +12,30 @@ export function Login({ userName, authState, onAuthChange }) {
     const [activeTab, setActiveTab] = useState('signin');
     const navigate = useNavigate();
 
-    function handleLogin(e) {
-        e.preventDefault();
-        console.log('Logging in:', email);
 
-        // simulate authentication
-        localStorage.setItem('userName', email);
-        onAuthChange(email, AuthState.Authenticated);
-        navigate('/home');
+    async function handleLogin(e) {
+      e.preventDefault();
+      console.log('Logging in:', email);
+      loginOrCreate('/api/auth/login');
+
+      // const response = await fetch('/api/auth/login', {
+      //   method: 'post',
+      //   body: JSON.stringify({ email: email, password: password }),
+      //   headers: {
+      //     'Content-type': 'application/json; charset=UTF-8',
+      //   },
+      // });
+      // if (response?.status === 200) {
+      //   localStorage.setItem('userName', email);
+      //   onAuthChange(email, AuthState.Authenticated);
+      //   navigate('/home');
+      // } else {
+        
+      // }
+      
+      
     }
+
 
     function handleSignup(e) {
         e.preventDefault();
@@ -28,12 +43,34 @@ export function Login({ userName, authState, onAuthChange }) {
             alert("Passwords don't match!");
             return;
         }
-
         console.log('Signing up:', email);
-        localStorage.setItem('userName', email);
-        onAuthChange(email, AuthState.Authenticated);
-        navigate('/home');
+        loginOrCreate('/api/auth/register');
+
+
+        // localStorage.setItem('userName', email);
+        // onAuthChange(email, AuthState.Authenticated);
+        // navigate('/home');
     }
+
+
+    async function loginOrCreate(endpoint) {
+    const response = await fetch(endpoint, {
+      method: 'post',
+      body: JSON.stringify({ email: email, password: password }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    });
+    if (response?.status === 200) {
+      localStorage.setItem('userName', email);
+      onAuthChange(email, AuthState.Authenticated);
+      navigate('/home');
+    } else {
+      const body = await response.json();
+      alert(body.msg || "Login failed");
+    }
+  }
+
 
   return (
     <main className="flex-fill container text-center mt-5">
