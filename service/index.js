@@ -18,3 +18,22 @@ let entries = [];
 var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
+// Registers a user
+apiRouter.post('/auth/register', async (req, res) => {
+
+});
+
+// logs in a user
+apiRouter.post('/auth/login', async (req, res) => {
+
+});
+
+// logs out a user
+apiRouter.delete('/auth/logout', async (req, res) => {
+
+});
+
+// Adds a journal entry
+apiRouter.post('/entry', async (req, res) => {
+
+});
