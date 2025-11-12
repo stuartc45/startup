@@ -56,6 +56,16 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 });
 
 
+const verifyAuth = async (req, res, next) => {
+    const user = await findUser('token', req.cookies[authCookieName]);
+    if (user) {
+        next();
+    } else {
+        res.status(401).send({ msg: 'Unauthorized' });
+    }
+};
+
+
 // Adds a journal entry
 apiRouter.post('/entry', verifyAuth, async (req, res) => {
     createEntry(req.body);
@@ -89,16 +99,6 @@ apiRouter.put('/entry', verifyAuth, (req, res) => {
 });
 
 
-const verifyAuth = async (req, res, next) => {
-    const user = await findUser('token', req.cookies[authCookieName]);
-    if (user) {
-        next();
-    } else {
-        res.status(401).send({ msg: 'Unauthorized' });
-    }
-};
-
-
 function createEntry(entry) {
     const newEntry = {
         id: uuid.v4(),
@@ -109,6 +109,7 @@ function createEntry(entry) {
 
     entries.push(newEntry);
 }
+
 
 function updateEntry(entry) {
     const id = entry.id;
@@ -121,6 +122,7 @@ function updateEntry(entry) {
     return true;
 }
 
+
 function deleteEntry(id) {
 
     const index = entries.findIndex(e => e.id === id);
@@ -131,6 +133,7 @@ function deleteEntry(id) {
     entries.splice(index, 1);
     return true;
 }
+
 
 async function createUser(email, password) {
     const passwordHash = await bcrypt.hash(password, 10);
@@ -145,11 +148,13 @@ async function createUser(email, password) {
     return user;
 }
 
+
 async function findUser(field, value) {
     if (!value) return null;
 
     return users.find((u) => u[field] === value);
 }
+
 
 function setAuthCookie(res, authToken) {
     res.cookie(authCookieName, authToken, {
@@ -159,6 +164,7 @@ function setAuthCookie(res, authToken) {
         sameSite: 'strict',
     });
 }
+
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
