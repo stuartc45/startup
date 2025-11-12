@@ -58,43 +58,28 @@ apiRouter.delete('/auth/logout', async (req, res) => {
 
 // Adds a journal entry
 apiRouter.post('/entry', verifyAuth, async (req, res) => {
-  const entry = {
-    id: uuid.v4(),
-    title: req.body.title,
-    date: req.body.date,
-    body: req.body.body,
-  };
+    createEntry(req.body);
+    res.status(201).send(entries);
+});
 
-  entries.push(entry);
-  res.status(201).send(entry);
+
+// Gets the journal entries for that user
+apiRouter.get('/entries', verifyAuth, async (req, res) => {
+    res.send(entries);
 });
 
 
 // Deletes a journal entry
 apiRouter.delete('/entry/:id', verifyAuth, (req, res) => {
-  const { id } = req.params;
-
-  const index = entries.findIndex(e => e.id === id);
-  if (index === -1) {
-    return res.status(404).send({ msg: 'Entry not found' });
-  }
-
-  entries.splice(index, 1);
-  res.status(204).end();
+    deleteEntry(req.body);
+    res.status(204).send(entries);
 });
 
 
 // Edits a journal entry
-apiRouter.put('/entry/:id', verifyAuth, (req, res) => {
-  const { id } = req.params;
-
-  const index = entries.findIndex(e => e.id === id);
-  if (index === -1) {
-    return res.status(404).send({ msg: 'Entry not found' });
-  }
-
-  entries[index] = { ...entries[index], ...req.body };
-  res.send(entries[index]);
+apiRouter.put('/entry', verifyAuth, (req, res) => {
+    updateEntries(req.body);
+    res.send(entries);
 });
 
 
@@ -107,26 +92,55 @@ const verifyAuth = async (req, res, next) => {
   }
 };
 
+
+function createEntry(entry) {
+    const newEntry = {
+        id: uuid.v4(),
+        title: entry.title,
+        date: entry.date,
+        body: entry.body,
+    };
+
+    entries.push(newEntry);
+}
+
 function updateEntries(entry) {
-    for (e in entries) {
-        if (entry.title === e.title) {
-            e.title = entry.title;
-            e.date = entry.date;
-            e.body = entry.body;
-            return;
-        }
+    // for (e in entries) {
+    //     if (entry.title === e.title) {
+    //         e.title = entry.title;
+    //         e.date = entry.date;
+    //         e.body = entry.body;
+    //         return;
+    //     }
+    // }
+
+    // entries.push(entry);
+
+    const title  = entry.title;
+    const newEntry = { "title": entry.title, "date": entry.date, "body": entry.body};
+    const index = entries.findIndex(e => e.title === title);
+    if (index === -1) {
+        return res.status(404).send({ msg: 'Entry not found' });
     }
 
-    entries.push(entry);
-
+    entries[index] = { ...entries[index], ...req.body };
 }
 
 function deleteEntry(entry) {
-    for (let i = 0; i < entries.length; i++) {
-        if (entry.title === entries[i].title) {
-            entries.splice(i, 1);
-        }
+    // for (let i = 0; i < entries.length; i++) {
+    //     if (entry.title === entries[i].title) {
+    //         entries.splice(i, 1);
+    //     }
+    // }
+    const title = entry.title;
+
+    const index = entries.findIndex(e => e.title === title);
+    if (index === -1) {
+        return res.status(404).send({ msg: 'Entry not found' });
     }
+
+    entries.splice(index, 1);
+
 }
 
 async function createUser(email, password) {

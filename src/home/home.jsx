@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import './home.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -76,7 +77,7 @@ export function Home() {
     else if (isEditing && editIndex !== null) {
       const entryToUpdate = entries[editIndex];
 
-      const response = await fetch(`/api/entry`, {
+      const response = await fetch(`/api/entry/:id`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newEntry),

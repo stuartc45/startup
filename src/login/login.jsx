@@ -14,9 +14,9 @@ export function Login({ userName, authState, onAuthChange }) {
 
 
     async function handleLogin(e) {
-      e.preventDefault();
-      console.log('Logging in:', email);
-      loginOrCreate('/api/auth/login');
+        e.preventDefault();
+        console.log('Logging in:', email);
+        loginOrCreate('/api/auth/login');
     }
 
 
