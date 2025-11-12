@@ -68,8 +68,8 @@ const verifyAuth = async (req, res, next) => {
 
 // Adds a journal entry
 apiRouter.post('/entry', verifyAuth, async (req, res) => {
-    createEntry(req.body);
-    res.status(201).send(entries);
+    const entry = createEntry(req.body);
+    res.status(201).send(entry);
 });
 
 
@@ -91,11 +91,11 @@ apiRouter.delete('/entry/:id', verifyAuth, (req, res) => {
 
 // Edits a journal entry
 apiRouter.put('/entry', verifyAuth, (req, res) => {
-    const success = updateEntry(req.body);
-    if (!success) {
+    const newEntry = updateEntry(req.body);
+    if (!newEntry) {
         return res.status(404).send({ msg: 'Entry not found' });
     }
-    res.status(200).send(entries);
+    res.status(200).send(newEntry);
 });
 
 
@@ -108,6 +108,7 @@ function createEntry(entry) {
     };
 
     entries.push(newEntry);
+    return newEntry;
 }
 
 
@@ -119,7 +120,7 @@ function updateEntry(entry) {
         return false;
     }
     entries.splice(index, 1, newEntry);
-    return true;
+    return newEntry;
 }
 
 
