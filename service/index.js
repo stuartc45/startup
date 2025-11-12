@@ -71,15 +71,21 @@ apiRouter.get('/entries', verifyAuth, async (req, res) => {
 
 // Deletes a journal entry
 apiRouter.delete('/entry/:id', verifyAuth, (req, res) => {
-    deleteEntry(req.body);
-    res.status(204).send(entries);
+    const success = deleteEntry(req.params.id);
+    if (!success) {
+        return res.status(404).send({ msg: 'Entry not found' });
+    }
+    res.status(200).send(entries);
 });
 
 
 // Edits a journal entry
 apiRouter.put('/entry', verifyAuth, (req, res) => {
-    updateEntries(req.body);
-    res.send(entries);
+    const success = updateEntry(req.body);
+    if (!success) {
+        return res.status(404).send({ msg: 'Entry not found' });
+    }
+    res.status(200).send(entries);
 });
 
 
@@ -104,25 +110,26 @@ function createEntry(entry) {
     entries.push(newEntry);
 }
 
-function updateEntries(entry) {
+function updateEntry(entry) {
     const id = entry.id;
     const newEntry = { "id": id, "title": entry.title, "date": entry.date, "body": entry.body};
     const index = entries.findIndex(e => e.id === id);
     if (index === -1) {
-        return res.status(404).send({ msg: 'Entry not found' });
+        return false;
     }
     entries.splice(index, 1, newEntry);
+    return true;
 }
 
-function deleteEntry(entry) {
-    const id = entry.id;
+function deleteEntry(id) {
 
     const index = entries.findIndex(e => e.id === id);
     if (index === -1) {
-        return res.status(404).send({ msg: 'Entry not found' });
+        return false;
     }
 
     entries.splice(index, 1);
+    return true;
 }
 
 async function createUser(email, password) {
