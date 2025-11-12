@@ -84,12 +84,12 @@ apiRouter.put('/entry', verifyAuth, (req, res) => {
 
 
 const verifyAuth = async (req, res, next) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  if (user) {
-    next();
-  } else {
-    res.status(401).send({ msg: 'Unauthorized' });
-  }
+    const user = await findUser('token', req.cookies[authCookieName]);
+    if (user) {
+        next();
+    } else {
+        res.status(401).send({ msg: 'Unauthorized' });
+    }
 };
 
 
@@ -105,72 +105,54 @@ function createEntry(entry) {
 }
 
 function updateEntries(entry) {
-    // for (e in entries) {
-    //     if (entry.title === e.title) {
-    //         e.title = entry.title;
-    //         e.date = entry.date;
-    //         e.body = entry.body;
-    //         return;
-    //     }
-    // }
-
-    // entries.push(entry);
-
-    const title  = entry.title;
-    const newEntry = { "title": entry.title, "date": entry.date, "body": entry.body};
-    const index = entries.findIndex(e => e.title === title);
+    const id = entry.id;
+    const newEntry = { "id": id, "title": entry.title, "date": entry.date, "body": entry.body};
+    const index = entries.findIndex(e => e.id === id);
     if (index === -1) {
         return res.status(404).send({ msg: 'Entry not found' });
     }
-
-    entries[index] = { ...entries[index], ...req.body };
+    entries.splice(index, 1, newEntry);
 }
 
 function deleteEntry(entry) {
-    // for (let i = 0; i < entries.length; i++) {
-    //     if (entry.title === entries[i].title) {
-    //         entries.splice(i, 1);
-    //     }
-    // }
-    const title = entry.title;
+    const id = entry.id;
 
-    const index = entries.findIndex(e => e.title === title);
+    const index = entries.findIndex(e => e.id === id);
     if (index === -1) {
         return res.status(404).send({ msg: 'Entry not found' });
     }
 
     entries.splice(index, 1);
-
 }
 
 async function createUser(email, password) {
-  const passwordHash = await bcrypt.hash(password, 10);
+    const passwordHash = await bcrypt.hash(password, 10);
 
-  const user = {
-    email: email,
-    password: passwordHash,
-    token: uuid.v4(),
-  };
-  users.push(user);
+    const user = {
+        email: email,
+        password: passwordHash,
+        token: uuid.v4(),
+    };
+    users.push(user);
 
-  return user;
+    return user;
 }
 
 async function findUser(field, value) {
-  if (!value) return null;
+    if (!value) return null;
 
-  return users.find((u) => u[field] === value);
+    return users.find((u) => u[field] === value);
 }
 
 function setAuthCookie(res, authToken) {
-  res.cookie(authCookieName, authToken, {
-    maxAge: 1000 * 60 * 60 * 24 * 365,
-    secure: true,
-    httpOnly: true,
-    sameSite: 'strict',
-  });
+    res.cookie(authCookieName, authToken, {
+        maxAge: 1000 * 60 * 60 * 24 * 365,
+        secure: true,
+        httpOnly: true,
+        sameSite: 'strict',
+    });
 }
 
 app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+    console.log(`Listening on port ${port}`);
 });
