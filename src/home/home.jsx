@@ -14,40 +14,61 @@ export function Home() {
   const [editIndex, setEditIndex] = useState(null);
   const modalRef = useRef(null);
 
+  // useEffect(() => {
+  //   const storedEntries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+  //   setEntries(storedEntries);
+  // }, []);
+
+  // useEffect(() => {
+  //   localStorage.setItem('journalEntries', JSON.stringify(entries));
+  // }, [entries]);
+
+  // useEffect(() => {
+  //   fetch('/api/entries')
+  //     .then((response) => response.json())
+  //     .then((entries) => {
+  //       setEntries(entries);
+  //     });
+  // }, []);
+
   useEffect(() => {
-    const storedEntries = JSON.parse(localStorage.getItem('journalEntries')) || [];
-    setEntries(storedEntries);
+    // Load cached entries first (instant UI)
+    const stored = JSON.parse(localStorage.getItem('journalEntries')) || [];
+    setEntries(stored);
+
+    // Then update with backend entries
+    fetch('/api/entries')
+      .then(res => res.ok ? res.json() : [])
+      .then(data => {
+        setEntries(data);
+        localStorage.setItem('journalEntries', JSON.stringify(data));
+      })
+      .catch(err => console.error(err));
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('journalEntries', JSON.stringify(entries));
-  }, [entries]);
+    // function handleAddEntry() {
+    //   if (!newEntry.title || !newEntry.date || !newEntry.body) {
+    //     alert('Please fill in all fields');
+    //     return;
+    //   }
+      
 
-  // function handleAddEntry() {
-  //   if (!newEntry.title || !newEntry.date || !newEntry.body) {
-  //     alert('Please fill in all fields');
-  //     return;
-  //   }
+    //   let updatedEntries;
+    //   if (isEditing && editIndex !== null) {
+    //     updatedEntries = [...entries];
+    //     updatedEntries[editIndex] = newEntry;
+    //   } else {
+    //     updatedEntries = [...entries, newEntry];
+    //   }
 
-  //   let updatedEntries;
-  //   if (isEditing && editIndex !== null) {
-  //     updatedEntries = [...entries];
-  //     updatedEntries[editIndex] = newEntry;
-  //   } else {
-  //     updatedEntries = [...entries, newEntry];
-  //   }
+    //   setEntries(updatedEntries);
+    //   setNewEntry({ title: '', date: '', body: '' });
+    //   setIsEditing(false);
+    //   setEditIndex(null);
 
-  //   setEntries(updatedEntries);
-  //   setNewEntry({ title: '', date: '', body: '' });
-  //   setIsEditing(false);
-  //   setEditIndex(null);
+    // }
 
-  //   // if (modalRef.current) {
-  //   // Modal.getOrCreateInstance(modalRef.current).hide();
-  //   // }
-  // }
-
-  async function handleAddEntry() {
+async function handleAddEntry() {
   if (!newEntry.title || !newEntry.date || !newEntry.body) {
     alert('Please fill in all fields');
     return;
@@ -56,44 +77,37 @@ export function Home() {
   try {
     let updatedEntries;
 
-    // --- POST to backend for NEW entry ---
-    if (!isEditing) {
+    if (isEditing && editIndex !== null) {
+      // ✅ Editing an existing entry
+      const entryToUpdate = entries[editIndex];
+
+      const response = await fetch(`/api/entry`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newEntry),
+      });
+
+      if (!response.ok) throw new Error('Failed to update entry');
+
+      const updatedEntry = await response.json();
+
+      updatedEntries = [...entries];
+      updatedEntries[editIndex] = updatedEntry;
+    } else {
+      // ✅ Creating a new entry
       const response = await fetch('/api/entry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newEntry),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to save entry');
-      }
+      if (!response.ok) throw new Error('Failed to create entry');
 
       const savedEntry = await response.json();
-      // savedEntry should include ID created by DB
-
       updatedEntries = [...entries, savedEntry];
     }
-    // --- PUT to backend for EDITING an entry ---
-    else if (isEditing && editIndex !== null) {
-      const entryToUpdate = entries[editIndex];
 
-      const response = await fetch(`/api/entry/:id`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newEntry),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update entry');
-      }
-
-      const updatedEntry = await response.json();
-
-      updatedEntries = [...entries];
-      updatedEntries[editIndex] = updatedEntry;
-    }
-
-    // ✅ Update local state so UI stays responsive
+    // Update local state
     setEntries(updatedEntries);
     setNewEntry({ title: '', date: '', body: '' });
     setIsEditing(false);
@@ -110,10 +124,32 @@ export function Home() {
     setEditIndex(index);
   }
 
-  function handleDelete(index) {
-    if (window.confirm('Are you sure you want to delete this entry?')) {
+  async function handleDelete(index) {
+    const entryToDelete = entries[index];
+
+    if (!entryToDelete) {
+      alert('Could not find entry to delete.');
+      return;
+    }
+
+    if (!window.confirm('Are you sure you want to delete this entry?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/entry/${entryToDelete.id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete entry');
+      }
+      console.log("made it");
       const updatedEntries = entries.filter((_, i) => i !== index);
       setEntries(updatedEntries);
+    } catch (err) {
+      console.error(err);
+      alert('Error deleting entry');
     }
   }
 
