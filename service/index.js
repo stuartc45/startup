@@ -103,12 +103,12 @@ apiRouter.delete('/entry/:id', verifyAuth, async (req, res) => {
 
 
 // Edits a journal entry
-apiRouter.put('/entry', verifyAuth, (req, res) => {
-    const newEntry = updateEntry(req.body);
-    if (!newEntry) {
+apiRouter.put('/entry', verifyAuth, async (req, res) => {
+    const updatedEntry = await DB.updateEntry(req.body);
+    if (!updatedEntry) {
         return res.status(404).send({ msg: 'Entry not found' });
     }
-    res.status(200).send(newEntry);
+    res.status(200).send(updatedEntry);
 });
 
 
@@ -120,18 +120,6 @@ function createEntry(entry) {
         body: entry.body,
     };
     DB.addEntry(newEntry);
-    return newEntry;
-}
-
-
-function updateEntry(entry) {
-    const id = entry.id;
-    const newEntry = { "id": id, "title": entry.title, "date": entry.date, "body": entry.body};
-    const index = entries.findIndex(e => e.id === id);
-    if (index === -1) {
-        return false;
-    }
-    entries.splice(index, 1, newEntry);
     return newEntry;
 }
 

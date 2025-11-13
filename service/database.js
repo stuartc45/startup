@@ -58,6 +58,27 @@ async function deleteEntry(id) {
     }
 }
 
+async function updateEntry(entry) {
+    try {
+        const result = await entryCollection.findOneAndUpdate(
+        { id: entry.id },
+        {
+            $set: {
+            title: entry.title,
+            date: entry.date,
+            body: entry.body,
+            },
+        },
+        { returnDocument: 'after' }
+        );
+
+        return result.value;
+    } catch (err) {
+        console.error('Error updating entry:', err);
+        return null;
+    }
+}
+
 module.exports = {
   getUser,
   getUserByToken,
@@ -66,4 +87,5 @@ module.exports = {
   addEntry,
   getEntries,
   deleteEntry,
+  updateEntry,
 };
