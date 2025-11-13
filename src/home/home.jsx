@@ -14,23 +14,6 @@ export function Home() {
   const [editIndex, setEditIndex] = useState(null);
   const modalRef = useRef(null);
 
-  // useEffect(() => {
-  //   const storedEntries = JSON.parse(localStorage.getItem('journalEntries')) || [];
-  //   setEntries(storedEntries);
-  // }, []);
-
-  // useEffect(() => {
-  //   localStorage.setItem('journalEntries', JSON.stringify(entries));
-  // }, [entries]);
-
-  // useEffect(() => {
-  //   fetch('/api/entries')
-  //     .then((response) => response.json())
-  //     .then((entries) => {
-  //       setEntries(entries);
-  //     });
-  // }, []);
-
   useEffect(() => {
     // Load cached entries first (instant UI)
     const stored = JSON.parse(localStorage.getItem('journalEntries')) || [];
@@ -40,12 +23,18 @@ export function Home() {
     fetch('/api/entries')
       .then(res => res.ok ? res.json() : [])
       .then(data => {
+        if (Array.isArray(data)) {
         setEntries(data);
+      } else if (data.entries) {
+        setEntries(data.entries);
+      } else {
+        console.error("Unexpected data format:", data);
+      }
         localStorage.setItem('journalEntries', JSON.stringify(data));
       })
       .catch(err => console.error(err));
   }, []);
-  
+
 
 async function handleAddEntry() {
   if (!newEntry.title || !newEntry.date || !newEntry.body) {
@@ -69,11 +58,10 @@ async function handleAddEntry() {
       if (!response.ok) throw new Error('Failed to update entry');
 
       const updatedEntry = await response.json();
-      console.log("updated entry");
-      console.log(updatedEntry);
-      setEntries(updatedEntry);
-      // updatedEntries = [...entries];
-      // updatedEntries[editIndex] = updatedEntry;
+      // console.log("updated entry");
+      // console.log(updatedEntry);
+      updatedEntries = [...entries];
+      updatedEntries[editIndex] = updatedEntry;
     } else {
       // ✅ Creating a new entry
       const response = await fetch('/api/entry', {
@@ -85,14 +73,14 @@ async function handleAddEntry() {
       if (!response.ok) throw new Error('Failed to create entry');
 
       const savedEntry = await response.json();
-      console.log("about to add entry");
-      console.log(savedEntry);
-      setEntries(savedEntry);
-      // updatedEntries = [...entries, savedEntry];
+      // console.log("about to add entry");
+      // console.log(savedEntry);
+      // setEntries(savedEntry);
+      updatedEntries = [...entries, savedEntry];
     }
 
     // Update local state
-    // setEntries(updatedEntries);
+    setEntries(updatedEntries);
     setNewEntry({ title: '', date: '', body: '' });
     setIsEditing(false);
     setEditIndex(null);
