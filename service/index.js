@@ -78,7 +78,13 @@ apiRouter.post('/entry', verifyAuth, async (req, res) => {
 
 // Gets the journal entries for that user
 apiRouter.get('/entries', verifyAuth, async (req, res) => {
+    try {
+    const entries = await DB.getEntries();
     res.send(entries);
+  } catch (err) {
+    console.error('Error fetching entries:', err);
+    res.status(500).send({ error: 'Failed to fetch entries' });
+  }
 });
 
 

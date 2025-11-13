@@ -24,8 +24,10 @@ export function Home() {
       .then(res => res.ok ? res.json() : [])
       .then(data => {
         if (Array.isArray(data)) {
+          // console.log("true");
         setEntries(data);
       } else if (data.entries) {
+        // console.log("false");
         setEntries(data.entries);
       } else {
         console.error("Unexpected data format:", data);
