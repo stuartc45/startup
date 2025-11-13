@@ -109,8 +109,8 @@ function createEntry(entry) {
         date: entry.date,
         body: entry.body,
     };
-
-    entries.push(newEntry);
+    DB.addEntry(newEntry);
+    // entries.push(newEntry);
     return newEntry;
 }
 

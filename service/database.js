@@ -19,25 +19,40 @@ const entryCollection = db.collection('entry');
 })();
 
 function getUser(email) {
-  return userCollection.findOne({ email: email });
+    return userCollection.findOne({ email: email });
 }
 
 function getUserByToken(token) {
-  return userCollection.findOne({ token: token });
+    return userCollection.findOne({ token: token });
 }
 
 async function addUser(user) {
-  await userCollection.insertOne(user);
+    await userCollection.insertOne(user);
 }
 
 async function updateUser(user) {
-  await userCollection.updateOne({ email: user.email }, { $set: user });
+    await userCollection.updateOne({ email: user.email }, { $set: user });
 }
 
+async function addEntry(entry) {
+    await entryCollection.insertOne(entry);
+}
+
+async function getEntries() {
+  try {
+    const entries = await entryCollection.find({}).toArray();
+    return entries;
+  } catch (err) {
+    console.error('Error getting entries:', err);
+    throw err;
+  }
+}
 
 module.exports = {
   getUser,
   getUserByToken,
   addUser,
   updateUser,
+  addEntry,
+  getEntries,
 };
