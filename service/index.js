@@ -79,22 +79,34 @@ apiRouter.post('/entry', verifyAuth, async (req, res) => {
 // Gets the journal entries for that user
 apiRouter.get('/entries', verifyAuth, async (req, res) => {
     try {
-    const entries = await DB.getEntries();
-    res.send(entries);
-  } catch (err) {
-    console.error('Error fetching entries:', err);
-    res.status(500).send({ error: 'Failed to fetch entries' });
-  }
+        const entries = await DB.getEntries();
+        console.log(entries);
+        res.send(entries);
+    } catch (err) {
+        console.error('Error fetching entries:', err);
+        res.status(500).send({ error: 'Failed to fetch entries' });
+    }
 });
 
 
 // Deletes a journal entry
-apiRouter.delete('/entry/:id', verifyAuth, (req, res) => {
-    const success = deleteEntry(req.params.id);
-    if (!success) {
+apiRouter.delete('/entry/:id', verifyAuth, async (req, res) => {
+    try {
+        const success = await DB.deleteEntry(req.params.id);
+        if (!success) {
         return res.status(404).send({ msg: 'Entry not found' });
+        }
+
+        res.status(200).send({ msg: 'Entry deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting entry:', err);
+        res.status(500).send({ msg: 'Server error deleting entry' });
     }
-    res.status(200).send(entries);
+    // const success = await DB.deleteEntry(req.params.id);
+    // if (!success) {
+    //     return res.status(404).send({ msg: 'Entry not found' });
+    // }
+    // res.status(200).send(entries);
 });
 
 
@@ -133,16 +145,16 @@ function updateEntry(entry) {
 }
 
 
-function deleteEntry(id) {
+// function deleteEntry(id) {
 
-    const index = entries.findIndex(e => e.id === id);
-    if (index === -1) {
-        return false;
-    }
+//     const index = entries.findIndex(e => e.id === id);
+//     if (index === -1) {
+//         return false;
+//     }
 
-    entries.splice(index, 1);
-    return true;
-}
+//     entries.splice(index, 1);
+//     return true;
+// }
 
 
 async function createUser(email, password) {

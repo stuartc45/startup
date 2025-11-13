@@ -39,13 +39,23 @@ async function addEntry(entry) {
 }
 
 async function getEntries() {
-  try {
-    const entries = await entryCollection.find({}).toArray();
-    return entries;
-  } catch (err) {
-    console.error('Error getting entries:', err);
-    throw err;
-  }
+    try {
+        const entries = await entryCollection.find({}).toArray();
+        return entries;
+    } catch (err) {
+        console.error('Error getting entries:', err);
+        throw err;
+    }
+}
+
+async function deleteEntry(id) {
+    try {
+        const result = await entryCollection.deleteOne({ _id: new ObjectId(id) });
+        return result.deletedCount === 1;
+    } catch (err) {
+        console.error('Error deleting entry:', err);
+        return false;
+    }
 }
 
 module.exports = {
@@ -55,4 +65,5 @@ module.exports = {
   updateUser,
   addEntry,
   getEntries,
+  deleteEntry,
 };
