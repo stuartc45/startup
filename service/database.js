@@ -50,7 +50,7 @@ async function getEntries() {
 
 async function deleteEntry(id) {
     try {
-        const result = await entryCollection.deleteOne({ _id: new ObjectId(id) });
+        const result = await entryCollection.deleteOne({ id: id });
         return result.deletedCount === 1;
     } catch (err) {
         console.error('Error deleting entry:', err);

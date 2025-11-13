@@ -13,9 +13,6 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('public'));
 
-// let users = [];
-// let entries = [];
-
 var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
@@ -102,11 +99,6 @@ apiRouter.delete('/entry/:id', verifyAuth, async (req, res) => {
         console.error('Error deleting entry:', err);
         res.status(500).send({ msg: 'Server error deleting entry' });
     }
-    // const success = await DB.deleteEntry(req.params.id);
-    // if (!success) {
-    //     return res.status(404).send({ msg: 'Entry not found' });
-    // }
-    // res.status(200).send(entries);
 });
 
 
@@ -128,7 +120,6 @@ function createEntry(entry) {
         body: entry.body,
     };
     DB.addEntry(newEntry);
-    // entries.push(newEntry);
     return newEntry;
 }
 
@@ -145,18 +136,6 @@ function updateEntry(entry) {
 }
 
 
-// function deleteEntry(id) {
-
-//     const index = entries.findIndex(e => e.id === id);
-//     if (index === -1) {
-//         return false;
-//     }
-
-//     entries.splice(index, 1);
-//     return true;
-// }
-
-
 async function createUser(email, password) {
     const passwordHash = await bcrypt.hash(password, 10);
 
@@ -166,7 +145,6 @@ async function createUser(email, password) {
         token: uuid.v4(),
     };
     await DB.addUser(user);
-    // users.push(user);
 
     return user;
 }
@@ -179,8 +157,6 @@ async function findUser(field, value) {
         return DB.getUserByToken(value);
       }
     return DB.getUser(value);
-
-    // return users.find((u) => u[field] === value);
 }
 
 
