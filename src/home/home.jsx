@@ -45,28 +45,7 @@ export function Home() {
       })
       .catch(err => console.error(err));
   }, []);
-
-    // function handleAddEntry() {
-    //   if (!newEntry.title || !newEntry.date || !newEntry.body) {
-    //     alert('Please fill in all fields');
-    //     return;
-    //   }
-      
-
-    //   let updatedEntries;
-    //   if (isEditing && editIndex !== null) {
-    //     updatedEntries = [...entries];
-    //     updatedEntries[editIndex] = newEntry;
-    //   } else {
-    //     updatedEntries = [...entries, newEntry];
-    //   }
-
-    //   setEntries(updatedEntries);
-    //   setNewEntry({ title: '', date: '', body: '' });
-    //   setIsEditing(false);
-    //   setEditIndex(null);
-
-    // }
+  
 
 async function handleAddEntry() {
   if (!newEntry.title || !newEntry.date || !newEntry.body) {
