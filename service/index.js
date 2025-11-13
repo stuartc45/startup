@@ -104,10 +104,13 @@ apiRouter.delete('/entry/:id', verifyAuth, async (req, res) => {
 
 // Edits a journal entry
 apiRouter.put('/entry', verifyAuth, async (req, res) => {
+    console.log("Update request received:", req.body);
     const updatedEntry = await DB.updateEntry(req.body);
     if (!updatedEntry) {
+        console.log("❌ Entry not found for ID:", req.body.id);
         return res.status(404).send({ msg: 'Entry not found' });
     }
+    console.log("✅ Entry updated:", updatedEntry);
     res.status(200).send(updatedEntry);
 });
 

@@ -60,7 +60,7 @@ async function deleteEntry(id) {
 
 async function updateEntry(entry) {
     try {
-        const result = await entryCollection.findOneAndUpdate(
+        const updateResult = await entryCollection.updateOne(
         { id: entry.id },
         {
             $set: {
@@ -69,10 +69,10 @@ async function updateEntry(entry) {
             body: entry.body,
             },
         },
-        { returnDocument: 'after' }
         );
 
-        return result.value;
+        const updatedEntry = await entryCollection.findOne({ id: entry.id });
+        return updatedEntry;
     } catch (err) {
         console.error('Error updating entry:', err);
         return null;
