@@ -90,9 +90,11 @@ async function handleAddEntry() {
       if (!response.ok) throw new Error('Failed to update entry');
 
       const updatedEntry = await response.json();
-
-      updatedEntries = [...entries];
-      updatedEntries[editIndex] = updatedEntry;
+      console.log("updated entry");
+      console.log(updatedEntry);
+      setEntries(updatedEntry);
+      // updatedEntries = [...entries];
+      // updatedEntries[editIndex] = updatedEntry;
     } else {
       // ✅ Creating a new entry
       const response = await fetch('/api/entry', {
@@ -104,11 +106,14 @@ async function handleAddEntry() {
       if (!response.ok) throw new Error('Failed to create entry');
 
       const savedEntry = await response.json();
-      updatedEntries = [...entries, savedEntry];
+      console.log("about to add entry");
+      console.log(savedEntry);
+      setEntries(savedEntry);
+      // updatedEntries = [...entries, savedEntry];
     }
 
     // Update local state
-    setEntries(updatedEntries);
+    // setEntries(updatedEntries);
     setNewEntry({ title: '', date: '', body: '' });
     setIsEditing(false);
     setEditIndex(null);
@@ -144,7 +149,6 @@ async function handleAddEntry() {
       if (!response.ok) {
         throw new Error('Failed to delete entry');
       }
-      console.log("made it");
       const updatedEntries = entries.filter((_, i) => i !== index);
       setEntries(updatedEntries);
     } catch (err) {
