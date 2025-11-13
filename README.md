@@ -145,8 +145,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did not complete this part of the deliverable.
+- [x] **Stores data in MongoDB** - The journal entries are stored in the database. When the service endpoints are called to create, edit, get, and delete journal entries then the entries are populated into the mongoDB and retrieved from there. The database access is written in service/database.js
+- [x] **Stores credentials in MongoDB** - Similar to the data, the service endpoints call methods in service/database.js that put the user email, hashed password, and token into the mongoDB.
 
 ## 🚀 WebSocket deliverable
 
