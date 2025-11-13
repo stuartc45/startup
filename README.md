@@ -133,15 +133,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Node.js/Express HTTP service** - I did not complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did not complete this part of the deliverable.
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Supports registration, login, logout, and restricted endpoint** - I did not complete this part of the deliverable.
-
-Create entry endpoint - pass the user id
-edit entry endpoint, delete entry endpoint, auto close of modal, 
+- [x] **Node.js/Express HTTP service** - I created the service folder that uses Express and node to start up the backend service based on the port that is specified.
+- [x] **Static middleware for frontend** - The static files are loaded with express, and the endpoints for the frontend are created in service/index.
+- [x] **Calls to third party endpoints** - In the about folder I created a component called "holiday" that does an api call to nager.date and gets the holiday for the current day. If there is no holiday, then "no holiday today" is displayed. If there is a holiday, that holiday gets displayed on the about page.
+- [x] **Backend service endpoints** - There are endpoints in the service/index folder that are used to register, log in, and logout a user as well as get, create, edit, and delete a journal entry.
+- [x] **Frontend calls service endpoints** - Most of the frontend code that calls to the service endpoints are in home.jsx and login.jsx. Those now call the endpoints to store the information on users and journal entries instead of using localstorage, as well as providing actual functionality on the login page and displaying the journal entries on the home page.
+- [x] **Supports registration, login, logout, and restricted endpoint** - The login works correctly where a user has to register first before being able to login. After they are registered, they can log out and log in with no errors. If they don't have an account and they try to login, they are restricted and it doesn't let them in. Logout deletes the auth token and doesn't let them back in until they login again.
 
 
 ## 🚀 DB deliverable
