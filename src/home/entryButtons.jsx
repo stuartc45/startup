@@ -15,14 +15,14 @@ export default function EntryButtons() {
         </button>
       </div>
       <div className="button-container gap-2">
-        <label htmlFor="button2" className="button2">Create Entry with Third Party Voice to Text</label>
+        {/* <label htmlFor="button2" className="button2">Create Entry with Third Party Voice to Text</label>
         <button
           type="button"
           id="button2"
           className="btn btn-outline-primary button2"
         >
           Create
-        </button>
+        </button> */}
       </div>
     </div>
   );
