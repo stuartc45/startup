@@ -12,6 +12,7 @@ export function initWebSocket() {
 
   socket.onopen = () => {
     console.log("🌐 WebSocket connected");
+    socket.send(JSON.stringify({ type: "connected" }));
   };
 
   socket.onmessage = (event) => {

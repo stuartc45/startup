@@ -6,6 +6,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import EntryButtons from './EntryButtons';
 import EntryList from './EntryList';
 import EntryModal from './entryModal';
+import { initWebSocket, onMessage, sendMessage } from './wsClient';
 
 export function Home() {
   const [entries, setEntries] = useState([]);
@@ -37,6 +38,33 @@ export function Home() {
       .catch(err => console.error(err));
   }, []);
 
+  // Initialize WebSocket
+  useEffect(() => {
+    initWebSocket();
+
+    // Receive messages from other devices
+    onMessage((msg) => {
+      if (msg.type === "connected") {
+        alert("Another device connected.");
+      }
+
+      if (msg.type === "entry-created") {
+        setEntries((prev) => [...prev, msg.entry]);
+      }
+
+      if (msg.type === "entry-updated") {
+        setEntries((prev) =>
+          prev.map((e) => (e.id === msg.entry.id ? msg.entry : e))
+        );
+      }
+
+      if (msg.type === "entry-deleted") {
+        setEntries((prev) => prev.filter((e) => e.id !== msg.id));
+      }
+    });
+  }, []);
+
+
 
 async function handleAddEntry() {
   if (!newEntry.title || !newEntry.date || !newEntry.body) {
@@ -64,6 +92,7 @@ async function handleAddEntry() {
       // console.log(updatedEntry);
       updatedEntries = [...entries];
       updatedEntries[editIndex] = updatedEntry;
+      sendMessage({ type: "entry-updated", entry: updatedEntry });
     } else {
       // ✅ Creating a new entry
       const response = await fetch('/api/entry', {
@@ -79,6 +108,8 @@ async function handleAddEntry() {
       // console.log(savedEntry);
       // setEntries(savedEntry);
       updatedEntries = [...entries, savedEntry];
+      sendMessage({ type: "entry-created", entry: savedEntry });
+
     }
 
     // Update local state
@@ -120,6 +151,7 @@ async function handleAddEntry() {
       }
       const updatedEntries = entries.filter((_, i) => i !== index);
       setEntries(updatedEntries);
+      sendMessage({ type: "entry-deleted", id: entryToDelete.id });
     } catch (err) {
       console.error(err);
       alert('Error deleting entry');
