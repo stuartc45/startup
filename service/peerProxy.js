@@ -7,6 +7,14 @@ function peerProxy(httpServer) {
   socketServer.on('connection', (socket) => {
     socket.isAlive = true;
 
+    // Detect multi-device
+    if (socketServer.clients.size > 1) {
+        socketServer.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify({ type: "MULTI_DEVICE" }));
+        }
+        });
+    }
     // Forward messages to everyone except the sender
     socket.on('message', function message(data) {
       socketServer.clients.forEach((client) => {
@@ -18,9 +26,9 @@ function peerProxy(httpServer) {
 
     // Respond to pong messages by marking the connection alive
     socket.on('pong', () => {
-      socket.isAlive = true;
+        socket.isAlive = true;
     });
-  });
+    });
 
   // Periodically send out a ping message to make sure clients are alive
   setInterval(() => {
