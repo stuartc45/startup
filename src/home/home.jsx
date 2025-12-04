@@ -7,6 +7,7 @@ import EntryButtons from './EntryButtons';
 import EntryList from './EntryList';
 import EntryModal from './entryModal';
 import { initWebSocket, onMessage, sendMessage } from './wsClient';
+import DeviceStatus from './deviceStatus';
 
 export function Home() {
   const [entries, setEntries] = useState([]);
@@ -14,6 +15,7 @@ export function Home() {
   const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const modalRef = useRef(null);
+  const [multiDevice, setMultiDevice] = useState(false);
 
   useEffect(() => {
     // Load cached entries first (instant UI)
@@ -46,6 +48,7 @@ export function Home() {
     onMessage((msg) => {
       if (msg.type === "connected") {
         alert("Another device connected.");
+        setMultiDevice(true);
       }
 
       if (msg.type === "entry-created") {
@@ -164,6 +167,7 @@ async function handleAddEntry() {
         <h2 className="title">Your Entries</h2>
       </div>
 
+      <DeviceStatus multiDevice={multiDevice} />
       <EntryButtons />
 
       <EntryList
