@@ -46,8 +46,8 @@ export function Home() {
 
     // Receive messages from other devices
     onMessage((msg) => {
-      if (msg.type === "connected") {
-        alert("Another device connected.");
+      if (msg.type === "connected" || msg.type === "MULTI_DEVICE") {
+        // alert("Another device connected.");
         setMultiDevice(true);
       }
 
