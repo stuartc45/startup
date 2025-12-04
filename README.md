@@ -152,8 +152,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Backend listens for WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Frontend makes WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Data sent over WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **WebSocket data displayed** - I did not complete this part of the deliverable.
-- [ ] **Application is fully functional** - I did not complete this part of the deliverable.
+- [x] **Backend listens for WebSocket connection** - The backend WebSocket in service/peerProxy.js makes the connection in the backend. It listens for a new connection and if there are multiple connections then it sends a message to the frontend that multiple devices are connected.
+- [x] **Frontend makes WebSocket connection** - The frontend WebSocket in src/home/wsClient.js is where the connection is in the frontend. It makes the upgrade from http to ws and has functionality to send messages and what to do when a message is received.
+- [x] **Data sent over WebSocket connection** - The data sent over the WebSocket is both a notification that another device connected, as well as once multiple connections are made then if a journal entry is modified in any way (created, edited, deleted) then it is automatically reflected on the other device.
+- [x] **WebSocket data displayed** - The journal entry data is displayed but also a notification pops up above the journal entries notifying the user that multiple devices are connected.
+- [x] **Application is fully functional** - Everything is working!
